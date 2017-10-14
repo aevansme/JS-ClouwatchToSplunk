@@ -1,4 +1,4 @@
-# Expert Opinion 
+# About 
 AWS Lambda used to stream events from AWS CloudWatch Logs to Splunk using Splunk's HTTP event collector API.
 
 # Development Stack / Techy
@@ -12,9 +12,3 @@ Define the following Environment Variables
  2. **SPLUNK_HEC_TOKEN**: Token for your Splunk HTTP event collector.
 
  Configure Lambda function to be triggered by CloudWatch logs. 
- 
-# Tests
-To be continued.
-
-# Contacts 
-andrew.evans@landmark.co.uk (developer), isabel.north@landmark.co.uk (devops)
