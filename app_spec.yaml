@@ -1,0 +1,36 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Cloudwatch to Splunk
+Resources:
+ CloudwatchToSplunk:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket: #{bamboo_deploy_environment}-create-assessment-deployment-files
+        S3Key: #{bamboo_DeploymentFileName}
+      Environment:
+        Variables:
+          SPLUNK_HEC_URL: #{bamboo_XOSplunkHecUrl}
+          SPLUNK_HEC_TOKEN: #{bamboo_XOSplunkHecToken}
+      FunctionName: #{bamboo_deploy_environment}-ForwardLogs-Splunk
+      Handler: function.handler
+      MemorySize: #{bamboo_XOLambdaMemorySizeMB}
+      Timeout: #{bamboo_XOLambdaTimeout}
+      Role: arn:aws:iam::529194094719:role/lambdaRole
+      Runtime: nodejs6.10
+      Description: "Stream events from AWS CloudWatch Logs to Splunk's HTTP event collector"
+ ForwardLogsCloudwatchInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties: 
+      Action: lambda:InvokeFunction
+      FunctionName: #{bamboo_deploy_environment}-ForwardLogs-Splunk
+      Principal: logs.eu-west-1.amazonaws.com
+      SourceArn: arn:aws:logs:eu-west-1:529194094719:log-group:/aws/lambda/#{bamboo_deploy_environment}-CreateAssessment:* 
+    DependsOn: CloudwatchToSplunk
+ SubscriptionFilter:
+    Type: AWS::Logs::SubscriptionFilter
+    Properties:
+      LogGroupName: "/aws/lambda/#{bamboo_deploy_environment}-CreateAssessment"
+      FilterPattern: ""
+      DestinationArn: arn:aws:lambda:eu-west-1:529194094719:function:#{bamboo_deploy_environment}-ForwardLogs-Splunk 
+    DependsOn: ForwardLogsCloudwatchInvokePermission
