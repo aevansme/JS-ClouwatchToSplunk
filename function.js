@@ -43,7 +43,7 @@ exports.handler = (event, context, callback) => {
             if (parsed.logEvents) {
                 parsed.logEvents.forEach((item) => {
                     // NOTE: Omitting START, END & REPORT messaging
-                    if (item.message.indexOf("START RequestId:") < 1 && item.message.indexOf("END RequestId:") < 1 && item.message.indexOf("REPORT RequestId:") < 1) {
+                    if (item.message.indexOf("START RequestId:") < 0 && item.message.indexOf("END RequestId:") < 0 && item.message.indexOf("REPORT RequestId:") < 0) {
                         // Send item JSON object (optional 'context' arg used to add Lambda metadata e.g. awsRequestId, functionName)
                         // Change "item.timestamp" below if time is specified in another field in the event
                         // Change to "logger.log(item.message, context)" if no time field is present in event
