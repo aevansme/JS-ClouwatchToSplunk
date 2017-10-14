@@ -42,7 +42,7 @@ exports.handler = (event, context, callback) => {
             let count = 0;
             if (parsed.logEvents) {
                 parsed.logEvents.forEach((item) => {
-                    // NOTE: For Expert Opinion we are omitting START, END & REPORT messaging
+                    // NOTE: Omitting START, END & REPORT messaging
                     if (item.message.indexOf("START RequestId:") < 1 && item.message.indexOf("END RequestId:") < 1 && item.message.indexOf("REPORT RequestId:") < 1) {
                         // Send item JSON object (optional 'context' arg used to add Lambda metadata e.g. awsRequestId, functionName)
                         // Change "item.timestamp" below if time is specified in another field in the event
